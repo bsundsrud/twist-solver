@@ -2,18 +2,20 @@
 import itertools
 import sys
 
-def load_words(filename):
+def load_words(filename, min_len, max_len):
 	ret = set()
 	with open(filename) as f:
 		for line in f:
-			ret.add(line.strip())
+			word = line.strip()
+			if len(word) >= min_len and len(word) <= max_len:
+				ret.add(word)
 	sys.stderr.write("Loaded {}\n".format(filename))
 	return ret
 
 def find_match(letters, *dicts):
 	words = set()
 	for d in dicts:
-		words.update(load_words(d))
+		words.update(load_words(d, 3, len(letters)))
 	sys.stderr.write("Loaded {} words.\n".format(len(words)))
 	permutations = 0
 	ret = set()
